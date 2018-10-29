@@ -1,0 +1,75 @@
+{
+	"srcBasePath": "../chaincode",
+	"smartcontracts": {
+		"test_node": {
+			"name": "test",
+			"path": "../chaincode/src/malarcon.cl/test_node",
+			"instantiatefuncname": "",
+			"endorsement": "default",
+			"type": "node"
+		},
+		"test_golang": {
+			"name": "another_test",
+			"path": "malarcon.cl/test_golang",
+			"instantiatefuncname": "init",
+			"endorsement": "default"
+		}
+	},
+	"endorsements": {
+		"default": {
+			"identities": [
+				{
+					"role": "member",
+					"org": "MainOrg"
+				},
+				{
+					"role": "member",
+					"org": "Org1"
+				},
+				{
+					"role": "member",
+					"org": "Org2"
+				},
+				{
+					"role": "admin",
+					"org": "MainOrg"
+				}
+			],
+			"policy": {
+				"1-of": [
+					{
+						"signed-by": 3
+					},
+					{
+						"3-of": [
+							{
+								"signed-by": 0
+							},
+							{
+								"signed-by": 1
+							},
+							{
+								"signed-by": 2
+							}
+						]
+					}
+				]
+			}
+		},
+		"mainOrgOnly": {
+			"identities": [
+				{
+					"role": "member",
+					"org": "MainOrg"
+				}
+			],
+			"policy": {
+				"1-of": [
+					{
+						"signed-by": 0
+					}
+				]
+			}
+		}
+	}
+}

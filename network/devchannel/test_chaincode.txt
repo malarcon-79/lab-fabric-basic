@@ -1,0 +1,58 @@
+curl -s -X POST \
+  http://localhost:3000/smartcontract/invoke \
+  -H "cache-control: no-cache" \
+  -H "content-type: application/json" \
+  -d '{
+	"org":"MainOrg",
+	"channel":"main-channel",
+	"chaincode":"test_node",
+	"function":"initLedger",
+	"args":[]
+}'
+
+curl -X POST \
+  http://localhost:3000/smartcontract/query \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+	"org":"MainOrg",
+	"channel":"main-channel",
+	"chaincode":"test_node",
+	"function":"queryAllCustomers",
+	"args":[]
+}'
+
+####################
+
+curl -X POST \
+  http://localhost:3000/smartcontract/invoke \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+	"org":"MainOrg",
+	"channel":"allorgs-channel",
+	"chaincode":"test_golang",
+	"function":"store",
+	"args":[{
+		"ISIN":"000000000001SQM-A",
+		"Symbol":"SQM-A",
+		"Description":"SOC QUIMICA MINERA DE CHILE S.A. SERIE A",
+		"Price":"29000"
+	}]
+}'
+
+curl -X POST \
+  http://localhost:3000/smartcontract/query \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+	"org":"MainOrg",
+	"channel":"allorgs-channel",
+	"chaincode":"test_golang",
+	"function":"find",
+	"args":[{
+		"selector":{
+			"Symbol":"SQM-A"
+		}
+	}]
+}'
