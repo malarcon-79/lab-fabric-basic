@@ -24,9 +24,6 @@ type StockSymbol struct {
 	Price       string `json:"Price"`
 }
 
-// Common Key prefixes
-const snapKeyPrefix string = "LAXDate~BBH~LBH"
-
 func main() {
 	logger.Info("Test Chaincode Activated")
 	err := shim.Start(new(TestChaincode))
