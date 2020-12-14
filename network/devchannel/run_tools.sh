@@ -3,7 +3,7 @@
 echo "Starting Fabric-tools TTY..."
 echo "Use CTRL+D to exit the shell"
 
-FABRIC_VERSION=${1:-"1.3.0"}
+FABRIC_VERSION=${1:-"2.3"}
 
 echo "Running tools version: " $FABRIC_VERSION
 

@@ -23,7 +23,7 @@ logger.configure({
 		new (logger.transports.Console)({
 			level: 'debug',
 			colorize: true,
-			timestamp: true
+            timestamp: true,
 		})
 	]
 });

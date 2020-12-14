@@ -47,11 +47,8 @@
 			"peers": [
 				"peer0.main.org.com"
 			],
-			"certificateAuthorities": [
-				"ca-mainorg"
-			],
 			"adminPrivateKey": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/users/Admin@main.org.com/msp/keystore/bb26c2d3c2292c961ff29f9b245ebb3b07acf907d83c45009abc9ddfd9cd5000_sk"
+				"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/users/Admin@main.org.com/msp/keystore/priv_sk"
 			},
 			"signedCert": {
 				"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/users/Admin@main.org.com/msp/signcerts/Admin@main.org.com-cert.pem"
@@ -62,11 +59,8 @@
 			"peers": [
 				"peer0.org1.org.com"
 			],
-			"certificateAuthorities": [
-				"ca-org1"
-			],
 			"adminPrivateKey": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/users/Admin@org1.org.com/msp/keystore/be824a2be8bb457838db84dd285cbaac29d15cbb24a489ceb3a1e6c5a7b22184_sk"
+				"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/users/Admin@org1.org.com/msp/keystore/priv_sk"
 			},
 			"signedCert": {
 				"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/users/Admin@org1.org.com/msp/signcerts/Admin@org1.org.com-cert.pem"
@@ -77,11 +71,8 @@
 			"peers": [
 				"peer0.org2.org.com"
 			],
-			"certificateAuthorities": [
-				"ca-org2"
-			],
 			"adminPrivateKey": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/users/Admin@org2.org.com/msp/keystore/f525d359ed4b3cb19169a5273c4998f1e526bac871d69220b1c589253a05607e_sk"
+				"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/users/Admin@org2.org.com/msp/keystore/priv_sk"
 			},
 			"signedCert": {
 				"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/users/Admin@org2.org.com/msp/signcerts/Admin@org2.org.com-cert.pem"
@@ -90,11 +81,8 @@
 		"MainOrgOrderer": {
 			"mspid": "MainOrgOrdererMSP",
 			"peers": [],
-			"certificateAuthorities": [
-				"ca-mainorg"
-			],
 			"adminPrivateKey": {
-				"path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/users/Admin@orderer.com/msp/keystore/981a3675fe1209b20a0bcb46fbd7e7fc275e5999639d4d873eb49ab3c7597570_sk"
+				"path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/users/Admin@orderer.com/msp/keystore/priv_sk"
 			},
 			"signedCert": {
 				"path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/users/Admin@orderer.com/msp/signcerts/Admin@orderer.com-cert.pem"
@@ -120,7 +108,8 @@
 			"eventUrl": "grpcs://localhost:7053",
 			"grpcOptions": {
 				"ssl-target-name-override": "peer0.main.org.com",
-				"grpc.keepalive_time_ms": 600000
+				"grpc.keepalive_time_ms": 600000,
+				"grpc-max-send-message-length": -1
 			},
 			"tlsCACerts": {
 				"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/peers/peer0.main.org.com/msp/tlscacerts/tlsca.main.org.com-cert.pem"
@@ -131,7 +120,8 @@
 			"eventUrl": "grpcs://localhost:8053",
 			"grpcOptions": {
 				"ssl-target-name-override": "peer0.org1.org.com",
-				"grpc.keepalive_time_ms": 600000
+				"grpc.keepalive_time_ms": 600000,
+				"grpc-max-send-message-length": -1
 			},
 			"tlsCACerts": {
 				"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/peers/peer0.org1.org.com/msp/tlscacerts/tlsca.org1.org.com-cert.pem"
@@ -142,73 +132,12 @@
 			"eventUrl": "grpcs://localhost:9053",
 			"grpcOptions": {
 				"ssl-target-name-override": "peer0.org2.org.com",
-				"grpc.keepalive_time_ms": 600000
+				"grpc.keepalive_time_ms": 600000,
+				"grpc-max-send-message-length": -1
 			},
 			"tlsCACerts": {
 				"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/peers/peer0.org2.org.com/msp/tlscacerts/tlsca.org2.org.com-cert.pem"
 			}
-		}
-	},
-	"certificateAuthorities": {
-		"ca-mainorg": {
-			"url": "https://localhost:7054",
-			"httpOptions": {
-				"verify": false
-			},
-			"tlsCACerts": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/ca/ca.main.org.com-cert.pem"
-			},
-			"registrar": {
-				"enrollId": "admin",
-				"enrollSecret": "adminpw",
-				"adminPrivateKey": {
-					"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/ca/48b1723c53f5f7d7713374561e8b0ff471d1f87dca4250bfaca8a78c00ffe95d_sk"
-				},
-				"adminSignedCert": {
-					"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/ca/ca.main.org.com-cert.pem"
-				}
-			},
-			"caName": "ca-mainorg"
-		},
-		"ca-org1": {
-			"url": "https://localhost:8054",
-			"httpOptions": {
-				"verify": false
-			},
-			"tlsCACerts": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/ca/ca.org1.org.com-cert.pem"
-			},
-			"registrar": {
-				"enrollId": "admin",
-				"enrollSecret": "adminpw",
-				"adminPrivateKey": {
-					"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/ca/b7296c2de71c16313b7c72069c85699ead3a7d267a066f1a4f295b360687a011_sk"
-				},
-				"adminSignedCert": {
-					"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/ca/ca.org1.org.com-cert.pem"
-				}
-			},
-			"caName": "ca-org1"
-		},
-		"ca-org2": {
-			"url": "https://localhost:9054",
-			"httpOptions": {
-				"verify": false
-			},
-			"tlsCACerts": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/ca/ca.org2.org.com-cert.pem"
-			},
-			"registrar": {
-				"enrollId": "admin",
-				"enrollSecret": "adminpw",
-				"adminPrivateKey": {
-					"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/ca/96d5b362b1061e2ad8296aa2e166ca6638171c1b407797f5551335f8f8a18ac0_sk"
-				},
-				"adminSignedCert": {
-					"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/ca/ca.org2.org.com-cert.pem"
-				}
-			},
-			"caName": "ca-org2"
 		}
 	}
 }

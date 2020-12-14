@@ -39,14 +39,14 @@ const upsert = async function (ccparams) {
 			try {
 				const orgCli = await commons.createClient(o);
 
-				logger.debug('Building Signatures for %j', o);
+				logger.debug('Building Signatures for %s', o);
 				const sign = orgCli.signChannelConfig(config_data);
 				signed.push(sign);
 
-				logger.debug('Successfully Built signature for %j', o);
+				logger.debug('Successfully Built signature for %s', o);
 				resolve(true);
 			} catch (err) {
-				logger.error('Signature building failed for %j', o, err);
+				logger.error('Signature building failed for %s', o, err);
 				resolve(false);
 			}
 		}));
@@ -63,10 +63,10 @@ const upsert = async function (ccparams) {
 		name: channelName,
 		txId: tx_id
 	};
-	logger.debug('Request is: %j', request);
+	logger.debug('Request is: %s', request);
 
 	const response = create ? await client.createChannel(request) : await client.updateChannel(request);
-	logger.debug((create ? 'Create' : 'Update') + ' Channel response: %j', response);
+	logger.debug((create ? 'Create' : 'Update') + ' Channel response: %s', response);
 
 	if (response && response.status == 'SUCCESS') {
 		logger.debug('Successfully ' + (create ? 'created' : 'updated') + ' the channel.');
@@ -125,7 +125,7 @@ const join = async function (ccparams) {
 	logger.debug('After tx');
 
 	let results = await channel.joinChannel(j_request);
-	logger.debug('Join Channel Response: %j', results);
+	logger.debug('Join Channel Response: %s', results);
 	if (results && results.response && results.response.status == 200) {
 		// join successful
 		logger.debug('Successfully joined peers in organization %s to join the channel', org);

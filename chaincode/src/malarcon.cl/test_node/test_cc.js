@@ -1,6 +1,5 @@
 'use strict';
 const shim = require('fabric-shim');
-const util = require('util');
 
 let logger = null;
 

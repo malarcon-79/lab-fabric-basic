@@ -218,7 +218,7 @@ const instantiateSmartContract = async function (ccparams) {
 	if (ccparams.transientMap && ccparams.transientMap != '') {
 		request.transientMap = ccparams.transientMap
 	}
-	logger.debug('Proposal request: %j', request);
+	logger.debug('Proposal request: %s', request);
 
 	let results;
 	if (ccparams.upgrade) {
