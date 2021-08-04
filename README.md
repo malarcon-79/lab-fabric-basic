@@ -6,15 +6,16 @@ Material para laboratorio HLF, basado en Hyperledger Fabric y SmartContracts tan
 
 Requisitos base (ejecución):
 - Docker CE [https://docs.docker.com/install/#supported-platforms](https://docs.docker.com/install/#supported-platforms)
-- Node 14 LTS [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
+- Node 14+ LTS [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
 - Python 2.x y compilador C/C++. En Windows con Node.js instalado, se puede usar en su reemplazo [windows-build-tools](https://www.npmjs.com/package/windows-build-tools)
-- cURL. En ambientes Linux, normalmente está disponible o se instala con el gestor de paquetes del sistema. En Windows, [descargar](https://curl.haxx.se/download.html) y agregar la ruta al PATH de sistema 
+- cURL. En ambientes Linux, normalmente está disponible o se instala con el gestor de paquetes del sistema. En Windows, [descargar](https://curl.haxx.se/download.html) y agregar la ruta al PATH de sistema
+- Intérprete de shell BASH. En windows, se puede instalar [GIT BASH](https://git-scm.com/download/win) como alternativa
 
 Requisitos desarrollo:
 - IDE para desarrollo con soporte Node.js y Golang. Recomendación: [Visual Studio Code](https://code.visualstudio.com/)
 - Golang 1.13 o superior, [descargar](https://golang.org/dl/)
 
-__Nota:__ para ambientes Windows, Docker funciona de forma nativa sólo para Windows 10 Pro o Windows Server 2016, ya que requiere las funciones de Hyper-V. En otras versiones de Windows, se debe usar la versión antigua de Docker que se basa en VirtualBox.
+__Nota:__ para ambientes Windows, Docker requiere habilitar la función [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10). Si se desea usar Docker con Hyper-V, sólo están soportados Windows 10 Pro y Windows Server 2016 o superior
 
 ## Iniciar ambiente
 
