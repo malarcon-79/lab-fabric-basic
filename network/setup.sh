@@ -7,6 +7,11 @@ cd ./chaincode/src/malarcon.cl/test_golang
 go mod vendor
 
 cd $curr
+cd ..
+cd ./client
+npm install
+
+cd $curr
 
 echo "Removing old containers, images and volumes"
 docker-compose down

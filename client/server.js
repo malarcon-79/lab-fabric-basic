@@ -19,13 +19,18 @@ const port = process.env.PORT || 3000;
 // Init logger
 let logger = require('winston');
 logger.configure({
-	transports: [
-		new (logger.transports.Console)({
-			level: 'debug',
-			colorize: true,
+    transports: [
+        new (logger.transports.Console)({
+            level: 'debug',
+            colorize: true,
             timestamp: true,
-		})
-	]
+            format: logger.format.combine(
+                logger.format.colorize(),
+                logger.format.splat(),
+                logger.format.simple()
+            ),
+        })
+    ]
 });
 
 //////////////////////
@@ -43,8 +48,8 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 // Support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({
-	extended: false,
-	limit: '50mb'
+    extended: false,
+    limit: '50mb'
 }));
 
 //////////////////

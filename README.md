@@ -7,7 +7,7 @@ Material para laboratorio HLF, basado en Hyperledger Fabric y SmartContracts tan
 Requisitos base (ejecución):
 - Docker CE [https://docs.docker.com/install/#supported-platforms](https://docs.docker.com/install/#supported-platforms)
 - Node 14+ LTS [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
-- Python 2.x y compilador C/C++. En Windows con Node.js instalado, se puede usar en su reemplazo [windows-build-tools](https://www.npmjs.com/package/windows-build-tools)
+- Python 3.x y compilador C/C++. En Windows con Node.js instalado, se puede usar en su reemplazo [windows-build-tools](https://www.npmjs.com/package/windows-build-tools)
 - cURL. En ambientes Linux, normalmente está disponible o se instala con el gestor de paquetes del sistema. En Windows, [descargar](https://curl.haxx.se/download.html) y agregar la ruta al PATH de sistema
 - Intérprete de shell BASH. En windows, se puede instalar [GIT BASH](https://git-scm.com/download/win) como alternativa
 
@@ -20,27 +20,26 @@ __Nota:__ para ambientes Windows, Docker requiere habilitar la función [WSL2](h
 ## Iniciar ambiente
 
 Para iniciar el entorno, hay 3 directorio:
-- __chaincode:__ contiene 2 smartcontracts, uno Node y el otro Golang. Aprendan Golang, que es el hijo ilegítimo de C mezclado con otros lenguajes.
-- __client:__ aplicación Node.js de tipo API REST que es además un cliente Fabric 1.3. Tiene las funciones que permiten crear canales, unir Peers a los canales, instalar/instanciar SmartContacts, solicitar querys sobre dichos SCs y hacer invocaciones de Transacciones.
-- __network:__ contiene el material criptográfico para levantar la red, junto con el archivo de Docker que mágicamente les levantará una red Fabric con la organización cabrona de la red llamada MainOrg, y 2 organizaciones que no pueden administrar llamadas Org1 y Org2. Hay 2 scripts:
-	- __setup.sh:__ borra cualquier instancia previa de la red, limpia contenedores y descarga las imágenes Docker que van a necesitar (y algunas que no van a necesitar)
+- __chaincode:__ contiene 2 smartcontracts, uno Node.js y el otro Golang. El smartcontract en Node.js tiene la ventaja de usar un lenguaje conocido (Javascript para Node.js / ECMAScript), mientras que el smartcontract en Go usa un lenguaje más estructurado y con una curva de aprendizaje algo complicada (deriva de C++ y Paradigma de Composición).
+- __client:__ aplicación Node.js de tipo API REST que es además un cliente Fabric v1.x / v2.x. Tiene las funciones que permiten crear canales, unir Peers a los canales, instalar/instanciar SmartContacts, solicitar querys sobre dichos SmartContracts y hacer invocaciones de Transacciones.
+- __network:__ contiene el material criptográfico para levantar la red, junto con el archivo de Docker que les levantará una red Fabric con la organización principal de la red llamada MainOrg, y 2 organizaciones secundarias (no pueden administrar la red) llamadas Org1 y Org2. Hay 2 scripts:
+	- __setup.sh:__ borra cualquier instancia previa de la red, limpia contenedores y descarga las dependencias para el smarcontract en Golang
 	- __load.sh:__ una vez que la red esté andando (ver más abajo), este script genera 2 canales, une a los Peers a los canales e instala los 2 SmartContracts de ejemplo, y por último llama a la consulta llamada “ping” de cada uno, para forzar su instanciación.
 
 El flujo para iniciar el ambiente local es:
 - Abrir una shell y ejecutar:
-```
+```shell
 cd network
 sh ./setup.sh
 docker-compose up -d
 cd ..
 cd client
-npm install
-node server.js
+node .
 ```
 Esto dejará tomada la shell por el proceso Node
 
 - Abrir otra shell y ejecutar:
-```
+```shell
 cd network
 sh ./load.sh
 ```
@@ -59,3 +58,13 @@ La API Node.js provee de las siguientes funciones (todas por POST):
 En el archivo [network/devchannel/test_chaincode.txt](./network/devchannel/test_chaincode.txt) hay ejemplos de llamadas a smartcontracts que se dejan como ejemplo y que son instalados por el scrit __load.sh__.
 
 Para agregar nuevos smartcontracts, se debe editar el archivo [client/config/smartcontracts.json](./client/config/smartcontracts.json) y agregar la configuración necesaria.
+
+## Detener ambiente
+
+Para detener el ambiente local, abrir una shell y ejecutar:
+```shell
+cd network
+docker-compose down
+```
+
+Para detener la API Node.js, seleccionar la shell donde se está ejecutando y presionar `CTRL+C`.
