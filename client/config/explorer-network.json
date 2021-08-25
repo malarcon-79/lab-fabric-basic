@@ -1,0 +1,60 @@
+{
+    "name": "dev-network",
+    "version": "1.0",
+    "client": {
+        "organization": "MainOrg",
+        "adminCredential": {
+            "id": "exploreradmin"
+        },
+        "enableAuthentication": false
+    },
+    "channels": {
+        "main-channel": {
+            "orderers": [
+                "orderer0.orderer.com"
+            ],
+            "peers": {
+                "peer0.main.org.com": {}
+            }
+        },
+        "allorgs-channel": {
+            "orderers": [
+                "orderer0.orderer.com"
+            ],
+            "peers": {
+                "peer0.main.org.com": {}
+            }
+        }
+    },
+    "organizations": {
+        "MainOrg": {
+            "mspid": "MainOrgMSP",
+            "peers": [
+                "peer0.main.org.com"
+            ],
+            "adminPrivateKey": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/users/Admin@main.org.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/users/Admin@main.org.com/msp/signcerts/Admin@main.org.com-cert.pem"
+            }
+        }
+    },
+    "orderers": {
+        "orderer0.orderer.com": {
+            "name": "orderer0.orderer.com",
+            "url": "grpcs://orderer0.orderer.com:7050",
+            "tlsCACerts": {
+                "path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer0.orderer.com/msp/tlscacerts/tlsca.orderer.com-cert.pem"
+            }
+        }
+    },
+    "peers": {
+        "peer0.main.org.com": {
+            "url": "grpcs://peer0.main.org.com:7051",
+            "tlsCACerts": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/peers/peer0.main.org.com/msp/tlscacerts/tlsca.main.org.com-cert.pem"
+            }
+        }
+    }
+}

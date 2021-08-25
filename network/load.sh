@@ -135,3 +135,6 @@ curl -s -X POST \
 	"function":"ping",
 	"args":[]
 }'
+
+# Restart Hyperledger Explorer now
+docker-compose up -d

@@ -164,32 +164,75 @@ services:
       - couchdb0.org2.org.com
 
   couchdb0.main.org.com:
-      container_name: couchdb0.main.org.com
-      image: couchdb:3.1
-      environment:
-        - COUCHDB_USER=admin
-        - COUCHDB_PASSWORD=adminpw
-      # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
-      # for example map it to utilize Fauxton User Interface in dev environments.
-      ports:
-        - "5984:5984"
+    container_name: couchdb0.main.org.com
+    image: couchdb:3.1
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "5984:5984"
   couchdb0.org1.org.com:
-      container_name: couchdb0.org1.org.com
-      image: couchdb:3.1
-      environment:
-        - COUCHDB_USER=admin
-        - COUCHDB_PASSWORD=adminpw
-      # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
-      # for example map it to utilize Fauxton User Interface in dev environments.
-      ports:
-        - "6984:5984"
+    container_name: couchdb0.org1.org.com
+    image: couchdb:3.1
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "6984:5984"
   couchdb0.org2.org.com:
-      container_name: couchdb0.org2.org.com
-      image: couchdb:3.1
-      environment:
-        - COUCHDB_USER=admin
-        - COUCHDB_PASSWORD=adminpw
-      # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
-      # for example map it to utilize Fauxton User Interface in dev environments.
-      ports:
-        - "7984:5984"
+    container_name: couchdb0.org2.org.com
+    image: couchdb:3.1
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "7984:5984"
+
+  explorerdb:
+    image: hyperledger/explorer-db:latest
+    container_name: explorerdb
+    environment:
+      - DATABASE_DATABASE=fabricexplorer
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWORD=password
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    #volumes:
+    #  - pgdata:/var/lib/postgresql/data
+
+  explorer:
+    image: hyperledger/explorer:latest
+    container_name: explorer
+    environment:
+      - DATABASE_HOST=explorerdb
+      - DATABASE_DATABASE=fabricexplorer
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWD=password
+      - LOG_LEVEL_CONSOLE=info
+      - LOG_CONSOLE_STDOUT=true
+      - DISCOVERY_AS_LOCALHOST=false
+    volumes:
+      - type: bind
+        source: ../client/config/explorer-config.json
+        target: /opt/explorer/app/platform/fabric/config.json
+      - type: bind
+        source: ../client/config/explorer-network.json
+        target: /opt/explorer/app/platform/fabric/connection-profile/explorer-network.json
+      - type: bind
+        source: ./devchannel/crypto-config
+        target: /opt/network/devchannel/crypto-config
+      - ../walletstore:/opt/explorer/wallet
+    ports:
+      - 8080:8080
+    depends_on:
+      explorerdb:
+        condition: service_healthy

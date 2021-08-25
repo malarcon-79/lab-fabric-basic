@@ -1,143 +1,143 @@
 {
-	"name": "dev-network",
-	"version": "1.0",
-	"channels": {
-		"main-channel": {
-			"orderers": [
-				"orderer0.orderer.com"
-			],
-			"peers": {
-				"peer0.main.org.com": {
-					"endorsingPeer": true,
-					"chaincodeQuery": true,
-					"ledgerQuery": true,
-					"eventSource": true
-				}
-			}
-		},
-		"allorgs-channel": {
-			"orderers": [
-				"orderer0.orderer.com"
-			],
-			"peers": {
-				"peer0.main.org.com": {
-					"endorsingPeer": true,
-					"chaincodeQuery": true,
-					"ledgerQuery": true,
-					"eventSource": true
-				},
-				"peer0.org1.org.com": {
-					"endorsingPeer": true,
-					"chaincodeQuery": true,
-					"ledgerQuery": true,
-					"eventSource": true
-				},
-				"peer0.org2.org.com": {
-					"endorsingPeer": true,
-					"chaincodeQuery": true,
-					"ledgerQuery": true,
-					"eventSource": true
-				}
-			}
-		}
-	},
-	"organizations": {
-		"MainOrg": {
-			"mspid": "MainOrgMSP",
-			"peers": [
-				"peer0.main.org.com"
-			],
-			"adminPrivateKey": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/users/Admin@main.org.com/msp/keystore/priv_sk"
-			},
-			"signedCert": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/users/Admin@main.org.com/msp/signcerts/Admin@main.org.com-cert.pem"
-			}
-		},
-		"Org1": {
-			"mspid": "Org1MSP",
-			"peers": [
-				"peer0.org1.org.com"
-			],
-			"adminPrivateKey": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/users/Admin@org1.org.com/msp/keystore/priv_sk"
-			},
-			"signedCert": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/users/Admin@org1.org.com/msp/signcerts/Admin@org1.org.com-cert.pem"
-			}
-		},
-		"Org2": {
-			"mspid": "Org2MSP",
-			"peers": [
-				"peer0.org2.org.com"
-			],
-			"adminPrivateKey": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/users/Admin@org2.org.com/msp/keystore/priv_sk"
-			},
-			"signedCert": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/users/Admin@org2.org.com/msp/signcerts/Admin@org2.org.com-cert.pem"
-			}
-		},
-		"MainOrgOrderer": {
-			"mspid": "MainOrgOrdererMSP",
-			"peers": [],
-			"adminPrivateKey": {
-				"path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/users/Admin@orderer.com/msp/keystore/priv_sk"
-			},
-			"signedCert": {
-				"path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/users/Admin@orderer.com/msp/signcerts/Admin@orderer.com-cert.pem"
-			}
-		}
-	},
-	"orderers": {
-		"orderer0.orderer.com": {
-			"name": "orderer0.orderer.com",
-			"url": "grpcs://localhost:7050",
-			"grpcOptions": {
-				"ssl-target-name-override": "orderer0.orderer.com",
-				"grpc-max-send-message-length": -1
-			},
-			"tlsCACerts": {
-				"path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer0.orderer.com/msp/tlscacerts/tlsca.orderer.com-cert.pem"
-			}
-		}
-	},
-	"peers": {
-		"peer0.main.org.com": {
-			"url": "grpcs://localhost:7051",
-			"eventUrl": "grpcs://localhost:7053",
-			"grpcOptions": {
-				"ssl-target-name-override": "peer0.main.org.com",
-				"grpc.keepalive_time_ms": 600000,
-				"grpc-max-send-message-length": -1
-			},
-			"tlsCACerts": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/peers/peer0.main.org.com/msp/tlscacerts/tlsca.main.org.com-cert.pem"
-			}
-		},
-		"peer0.org1.org.com": {
-			"url": "grpcs://localhost:8051",
-			"eventUrl": "grpcs://localhost:8053",
-			"grpcOptions": {
-				"ssl-target-name-override": "peer0.org1.org.com",
-				"grpc.keepalive_time_ms": 600000,
-				"grpc-max-send-message-length": -1
-			},
-			"tlsCACerts": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/peers/peer0.org1.org.com/msp/tlscacerts/tlsca.org1.org.com-cert.pem"
-			}
-		},
-		"peer0.org2.org.com": {
-			"url": "grpcs://localhost:9051",
-			"eventUrl": "grpcs://localhost:9053",
-			"grpcOptions": {
-				"ssl-target-name-override": "peer0.org2.org.com",
-				"grpc.keepalive_time_ms": 600000,
-				"grpc-max-send-message-length": -1
-			},
-			"tlsCACerts": {
-				"path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/peers/peer0.org2.org.com/msp/tlscacerts/tlsca.org2.org.com-cert.pem"
-			}
-		}
-	}
+    "name": "dev-network",
+    "version": "1.0",
+    "channels": {
+        "main-channel": {
+            "orderers": [
+                "orderer0.orderer.com"
+            ],
+            "peers": {
+                "peer0.main.org.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                }
+            }
+        },
+        "allorgs-channel": {
+            "orderers": [
+                "orderer0.orderer.com"
+            ],
+            "peers": {
+                "peer0.main.org.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                },
+                "peer0.org1.org.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                },
+                "peer0.org2.org.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                }
+            }
+        }
+    },
+    "organizations": {
+        "MainOrg": {
+            "mspid": "MainOrgMSP",
+            "peers": [
+                "peer0.main.org.com"
+            ],
+            "adminPrivateKey": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/users/Admin@main.org.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/users/Admin@main.org.com/msp/signcerts/Admin@main.org.com-cert.pem"
+            }
+        },
+        "Org1": {
+            "mspid": "Org1MSP",
+            "peers": [
+                "peer0.org1.org.com"
+            ],
+            "adminPrivateKey": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/users/Admin@org1.org.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/users/Admin@org1.org.com/msp/signcerts/Admin@org1.org.com-cert.pem"
+            }
+        },
+        "Org2": {
+            "mspid": "Org2MSP",
+            "peers": [
+                "peer0.org2.org.com"
+            ],
+            "adminPrivateKey": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/users/Admin@org2.org.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/users/Admin@org2.org.com/msp/signcerts/Admin@org2.org.com-cert.pem"
+            }
+        },
+        "MainOrgOrderer": {
+            "mspid": "MainOrgOrdererMSP",
+            "peers": [],
+            "adminPrivateKey": {
+                "path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/users/Admin@orderer.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/users/Admin@orderer.com/msp/signcerts/Admin@orderer.com-cert.pem"
+            }
+        }
+    },
+    "orderers": {
+        "orderer0.orderer.com": {
+            "name": "orderer0.orderer.com",
+            "url": "grpcs://localhost:7050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer0.orderer.com",
+                "grpc-max-send-message-length": -1
+            },
+            "tlsCACerts": {
+                "path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer0.orderer.com/msp/tlscacerts/tlsca.orderer.com-cert.pem"
+            }
+        }
+    },
+    "peers": {
+        "peer0.main.org.com": {
+            "url": "grpcs://localhost:7051",
+            "eventUrl": "grpcs://localhost:7053",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.main.org.com",
+                "grpc.keepalive_time_ms": 600000,
+                "grpc-max-send-message-length": -1
+            },
+            "tlsCACerts": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/peers/peer0.main.org.com/msp/tlscacerts/tlsca.main.org.com-cert.pem"
+            }
+        },
+        "peer0.org1.org.com": {
+            "url": "grpcs://localhost:8051",
+            "eventUrl": "grpcs://localhost:8053",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.org1.org.com",
+                "grpc.keepalive_time_ms": 600000,
+                "grpc-max-send-message-length": -1
+            },
+            "tlsCACerts": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/peers/peer0.org1.org.com/msp/tlscacerts/tlsca.org1.org.com-cert.pem"
+            }
+        },
+        "peer0.org2.org.com": {
+            "url": "grpcs://localhost:9051",
+            "eventUrl": "grpcs://localhost:9053",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.org2.org.com",
+                "grpc.keepalive_time_ms": 600000,
+                "grpc-max-send-message-length": -1
+            },
+            "tlsCACerts": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/peers/peer0.org2.org.com/msp/tlscacerts/tlsca.org2.org.com-cert.pem"
+            }
+        }
+    }
 }
