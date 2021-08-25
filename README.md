@@ -59,6 +59,8 @@ En el archivo [network/devchannel/test_chaincode.txt](./network/devchannel/test_
 
 Para agregar nuevos smartcontracts, se debe editar el archivo [client/config/smartcontracts.json](./client/config/smartcontracts.json) y agregar la configuración necesaria.
 
+Para visualizar la red mediante Hyperledger Explorer, abrir la dirección http://localhost:8080
+
 ## Detener ambiente
 
 Para detener el ambiente local, abrir una shell y ejecutar:
