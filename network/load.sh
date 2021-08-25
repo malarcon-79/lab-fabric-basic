@@ -106,7 +106,7 @@ curl -s -X POST \
 
 echo
 echo
-sleep 1
+sleep 5
 
 curl -s -X POST \
   http://localhost:3000/smartcontract/query \
@@ -122,7 +122,7 @@ curl -s -X POST \
 
 echo
 echo
-sleep 1
+sleep 5
 
 curl -s -X POST \
   http://localhost:3000/smartcontract/query \
