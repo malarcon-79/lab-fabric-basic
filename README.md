@@ -15,7 +15,18 @@ Requisitos desarrollo:
 - IDE para desarrollo con soporte Node.js y Golang. Recomendación: [Visual Studio Code](https://code.visualstudio.com/)
 - Golang 1.13 o superior, [descargar](https://golang.org/dl/)
 
-__Nota:__ para ambientes Windows, Docker requiere habilitar la función [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10). Si se desea usar Docker con Hyper-V, sólo están soportados Windows 10 Pro y Windows Server 2016 o superior
+__Nota Windows:__ para ambientes Windows, Docker requiere habilitar la función [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10). Si se desea usar Docker con Hyper-V, sólo están soportados Windows 10 Pro y Windows Server 2016 o superior.
+
+__Nota Mac:__ para ambientes MacOS, Fabric requiere acceso al socket de Docker desde los nodos Peers. 
+Existe un bug en los permisos de acceso en Mac, que se soluciona desactivando `gRPC FUSE` en las opciones de Docker Desktop.
+- Ejecutar en shell (el primer comando puede fallar, pero no afecta):
+```shell
+sudo chgrp docker /var/run/docker.sock
+sudo chmod g+w /var/run/docker.sock
+```
+- Ir a _"General"_ > _"Use gRPC FUSE for file sharing"_ y desactivar la opción.
+- Presionar botón _"Apply & Restart"_.
+- Esperar a que reinicie Docker
 
 ## Iniciar ambiente
 
