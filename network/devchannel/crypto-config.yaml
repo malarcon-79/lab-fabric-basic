@@ -1,24 +1,20 @@
-# Copyright IBM Corp. All Rights Reserved.
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-
 # ---------------------------------------------------------------------------
 # "OrdererOrgs" - Definition of organizations managing orderer nodes
 # ---------------------------------------------------------------------------
-OrdererOrgs:
-  # ---------------------------------------------------------------------------
-  # Orderer
-  # ---------------------------------------------------------------------------
-  - Name: MainOrgOrderer
-    Domain: orderer.com
-    # ---------------------------------------------------------------------------
-    # "Specs" - See PeerOrgs below for complete description
-    # ---------------------------------------------------------------------------
-    #Specs:
-    #  - Hostname: mainorgorderer
-    Template:
-      Count: 3
+#OrdererOrgs:
+#  # ---------------------------------------------------------------------------
+#  # Orderer
+#  # ---------------------------------------------------------------------------
+#  - Name: MainOrgOrderer
+#    Domain: orderer.com
+#    # ---------------------------------------------------------------------------
+#    # "Specs" - See PeerOrgs below for complete description
+#    # ---------------------------------------------------------------------------
+#    #Specs:
+#    #  - Hostname: mainorgorderer
+#    Template:
+#      Count: 3
+
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
 # ---------------------------------------------------------------------------
@@ -44,12 +40,29 @@ PeerOrgs:
     #
     #                 which obtains its values from the Spec.Hostname and
     #                 Org.Domain, respectively.
-    # ---------------------------------------------------------------------------
-    # Specs:
-    #   - Hostname: foo # implicitly "foo.org1.example.com"
-    #     CommonName: foo27.org5.example.com # overrides Hostname-based FQDN set above
-    #   - Hostname: bar
-    #   - Hostname: baz
+    #   - SANS:       (Optional) Specifies one or more Subject Alternative Names
+    #                 the be set in the resulting x509.  Accepts template
+    #                 variables {{.Hostname}}, {{.Domain}}, {{.CommonName}}
+    #                 NOTE: Two implicit entries are created for you:
+    #                     - {{ .CommonName }}
+    #                     - {{ .Hostname }}
+    Specs:
+      - Hostname: peer0 # implicitly "peer0.main.org.com"
+        SANS:
+          - "localhost"
+      - Hostname: peer1 # implicitly "peer1.main.org.com"
+        SANS:
+          - "localhost"
+      - Hostname: orderer0 # implicitly "orderer0.main.org.com"
+        SANS:
+          - "localhost"
+      - Hostname: orderer1 # implicitly "orderer1.main.org.com"
+        SANS:
+          - "localhost"
+      - Hostname: orderer2 # implicitly "orderer2.main.org.com"
+        SANS:
+        - "localhost"
+
     # ---------------------------------------------------------------------------
     # "Template"
     # ---------------------------------------------------------------------------
@@ -62,35 +75,71 @@ PeerOrgs:
     # sections and the aggregate nodes will be created for you.  Take care with
     # name collisions
     # ---------------------------------------------------------------------------
-    Template:
-      Count: 2
-      # Start: 5
-      # Hostname: {{.Prefix}}{{.Index}} # default
+    #Template:
+    #  Count: 2
+    #  Start: 5
+    #  Hostname: {{.Prefix}}{{.Index}} # default
+    #  SANS:
+    #    - "localhost"
+
     # ---------------------------------------------------------------------------
     # "Users"
     # ---------------------------------------------------------------------------
     # Count: The number of user accounts _in addition_ to Admin
     # ---------------------------------------------------------------------------
     Users:
-      Count: 1
+      Count: 0
+
   # ---------------------------------------------------------------------------
-  # Org2: See "Org1" for full specification
+  # Org1: See "MainOrg" for full specification
   # ---------------------------------------------------------------------------
   - Name: Org1
     Domain: org1.org.com
     EnableNodeOUs: true
-    Template:
-      Count: 2
+    Specs:
+      - Hostname: peer0 # implicitly "peer0.org1.org.com"
+        SANS:
+        - "localhost"
+      - Hostname: peer1 # implicitly "peer1.org1.org.com"
+        SANS:
+        - "localhost"
+      - Hostname: orderer0 # implicitly "orderer0.org1.org.com"
+        SANS:
+        - "localhost"
+      - Hostname: orderer1 # implicitly "orderer1.org1.org.com"
+        SANS:
+        - "localhost"
+      - Hostname: orderer2 # implicitly "orderer2.org1.org.com"
+        SANS:
+        - "localhost"
+    #Template:
+    #  Count: 2
     Users:
-      Count: 1
+      Count: 0
 
   # ---------------------------------------------------------------------------
-  # Org2: See "Org1" for full specification
+  # Org2: See "MainOrg" for full specification
   # ---------------------------------------------------------------------------
   - Name: Org2
     Domain: org2.org.com
     EnableNodeOUs: true
-    Template:
-      Count: 2
+    Specs:
+      - Hostname: peer0 # implicitly "peer0.org2.org.com"
+        SANS:
+        - "localhost"
+      - Hostname: peer1 # implicitly "peer1.org2.org.com"
+        SANS:
+        - "localhost"
+      - Hostname: orderer0 # implicitly "orderer0.org2.org.com"
+        SANS:
+        - "localhost"
+      - Hostname: orderer1 # implicitly "orderer1.org2.org.com"
+        SANS:
+        - "localhost"
+      - Hostname: orderer2 # implicitly "orderer2.org2.org.com"
+        SANS:
+        - "localhost"
+    #Template:
+    #  Count: 2
     Users:
-      Count: 1
+      Count: 0

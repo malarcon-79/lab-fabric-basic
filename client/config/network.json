@@ -4,7 +4,7 @@
     "channels": {
         "main-channel": {
             "orderers": [
-                "orderer0.orderer.com"
+                "orderer0.main.org.com"
             ],
             "peers": {
                 "peer0.main.org.com": {
@@ -17,7 +17,9 @@
         },
         "allorgs-channel": {
             "orderers": [
-                "orderer0.orderer.com"
+                "orderer0.main.org.com",
+                "orderer0.org1.org.com",
+                "orderer0.org2.org.com"
             ],
             "peers": {
                 "peer0.main.org.com": {

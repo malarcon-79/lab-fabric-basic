@@ -1,40 +1,155 @@
 version: '3.2'
 
 services:
-  orderer0.orderer.com:
-    container_name: orderer0.orderer.com
-    image: hyperledger/fabric-orderer:2.3
+  orderer0.main.org.com:
+    container_name: orderer0.main.org.com
+    image: hyperledger/fabric-orderer:2.3.3
     environment:
+      # Values can be viewed at https://github.com/hyperledger/fabric/blob/main/sampleconfig/orderer.yaml
       - CONFIGTX_ORDERER_ORDERERTYPE=etcdraft
       - ORDERER_GENERAL_LOGLEVEL=INFO
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
-      - ORDERER_GENERAL_GENESISMETHOD=file
-      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/genesis.block
-      - ORDERER_GENERAL_LOCALMSPID=MainOrgOrdererMSP
+      - ORDERER_GENERAL_BOOTSTRAPMETHOD=none
+      #- ORDERER_GENERAL_GENESISMETHOD=file
+      #- ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=MainOrgMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
-      - ORDERER_RAMLEDGER_HISTORY_SIZE=100
       - ORDERER_GENERAL_TLS_ENABLED=true
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:9443
+      - ORDERER_ADMIN_TLS_ENABLED=true
+      - ORDERER_ADMIN_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_ADMIN_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_ADMIN_TLS_CLIENTAUTHREQUIRED=true
+      - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_CHANNELPARTICIPATION_ENABLED=true
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     ports:
       - 7050:7050
+      - 9443:9443
     volumes:
+        #- type: bind
+        #  source: ./devchannel/channels/genesis.block
+        #  target: /var/hyperledger/orderer/genesis.block
         - type: bind
-          source: ./devchannel/channels/genesis.block
-          target: /var/hyperledger/orderer/genesis.block
-        - type: bind
-          source: ./devchannel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer0.orderer.com/msp
+          source: ./devchannel/crypto-config/peerOrganizations/main.org.com/peers/orderer0.main.org.com/msp
           target: /var/hyperledger/orderer/msp
         - type: bind
-          source: ./devchannel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer0.orderer.com/tls
+          source: ./devchannel/crypto-config/peerOrganizations/main.org.com/peers/orderer0.main.org.com/tls
+          target: /var/hyperledger/orderer/tls
+        #- type: bind
+        #  source: ./devchannel/crypto-config/peerOrganizations/main.org.com/peers/peer0.main.org.com/tls
+        #  target: /etc/hyperledger/fabric/tls
+
+  orderer1.main.org.com:
+    container_name: orderer1.main.org.com
+    image: hyperledger/fabric-orderer:2.3.3
+    environment:
+      - CONFIGTX_ORDERER_ORDERERTYPE=etcdraft
+      - ORDERER_GENERAL_LOGLEVEL=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7150
+      - ORDERER_GENERAL_BOOTSTRAPMETHOD=none
+      - ORDERER_GENERAL_LOCALMSPID=MainOrgMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:9543
+      - ORDERER_ADMIN_TLS_ENABLED=true
+      - ORDERER_ADMIN_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_ADMIN_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_ADMIN_TLS_CLIENTAUTHREQUIRED=true
+      - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_CHANNELPARTICIPATION_ENABLED=true
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    ports:
+      - 7150:7150
+      - 9543:9543
+    volumes:
+        - type: bind
+          source: ./devchannel/crypto-config/peerOrganizations/main.org.com/peers/orderer1.main.org.com/msp
+          target: /var/hyperledger/orderer/msp
+        - type: bind
+          source: ./devchannel/crypto-config/peerOrganizations/main.org.com/peers/orderer1.main.org.com/tls
+          target: /var/hyperledger/orderer/tls
+
+  orderer0.org1.org.com:
+    container_name: orderer0.org1.org.com
+    image: hyperledger/fabric-orderer:2.3.3
+    environment:
+      - CONFIGTX_ORDERER_ORDERERTYPE=etcdraft
+      - ORDERER_GENERAL_LOGLEVEL=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=8050
+      - ORDERER_GENERAL_BOOTSTRAPMETHOD=none
+      - ORDERER_GENERAL_LOCALMSPID=Org1MSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:10443
+      - ORDERER_ADMIN_TLS_ENABLED=true
+      - ORDERER_ADMIN_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_ADMIN_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_ADMIN_TLS_CLIENTAUTHREQUIRED=true
+      - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_CHANNELPARTICIPATION_ENABLED=true
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    ports:
+      - 8050:8050
+      - 10443:10443
+    volumes:
+        - type: bind
+          source: ./devchannel/crypto-config/peerOrganizations/org1.org.com/peers/orderer0.org1.org.com/msp
+          target: /var/hyperledger/orderer/msp
+        - type: bind
+          source: ./devchannel/crypto-config/peerOrganizations/org1.org.com/peers/orderer0.org1.org.com/tls
+          target: /var/hyperledger/orderer/tls
+
+  orderer0.org2.org.com:
+    container_name: orderer0.org2.org.com
+    image: hyperledger/fabric-orderer:2.3.3
+    environment:
+      - CONFIGTX_ORDERER_ORDERERTYPE=etcdraft
+      - ORDERER_GENERAL_LOGLEVEL=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=9050
+      - ORDERER_GENERAL_BOOTSTRAPMETHOD=none
+      - ORDERER_GENERAL_LOCALMSPID=Org1MSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:11443
+      - ORDERER_ADMIN_TLS_ENABLED=true
+      - ORDERER_ADMIN_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_ADMIN_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_ADMIN_TLS_CLIENTAUTHREQUIRED=true
+      - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_CHANNELPARTICIPATION_ENABLED=true
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    ports:
+      - 9050:9050
+      - 11443:11443
+    volumes:
+        - type: bind
+          source: ./devchannel/crypto-config/peerOrganizations/org2.org.com/peers/orderer0.org2.org.com/msp
+          target: /var/hyperledger/orderer/msp
+        - type: bind
+          source: ./devchannel/crypto-config/peerOrganizations/org2.org.com/peers/orderer0.org2.org.com/tls
           target: /var/hyperledger/orderer/tls
 
   peer0.main.org.com:
     container_name: peer0.main.org.com
-    image: hyperledger/fabric-peer:2.3
+    image: hyperledger/fabric-peer:2.3.3
     environment:
+      # Values can be viewed at https://github.com/hyperledger/fabric/blob/main/sampleconfig/core.yaml
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer0.main.org.com
       - CORE_PEER_NETWORKID=dev
@@ -44,14 +159,20 @@ services:
       - CORE_PEER_LOCALMSPID=MainOrgMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_PEER_ADDRESS=peer0.main.org.com:7051
+      - CORE_PEER_GOSSIP_ORGLEADER=true
+      - CORE_PEER_GOSSIP_STATE_ENABLED=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=false
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_CHAINCODE_EXECUTETIMEOUT=120s
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0.main.org.com:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_CACHESIZE=256
+      - CORE_LEDGER_STATE_TOTALQUERYLIMIT=200000
       # # the following setting starts chaincode containers on the same
       # # bridge network as the peers
       # # https://docs.docker.com/compose/networking/
@@ -72,12 +193,12 @@ services:
         source: ./devchannel/crypto-config/peerOrganizations/main.org.com/peers/peer0.main.org.com/tls
         target: /etc/hyperledger/fabric/tls
     depends_on:
-      - orderer0.orderer.com
+      - orderer0.main.org.com
       - couchdb0.main.org.com
 
   peer0.org1.org.com:
     container_name: peer0.org1.org.com
-    image: hyperledger/fabric-peer:2.3
+    image: hyperledger/fabric-peer:2.3.3
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer0.org1.org.com
@@ -86,11 +207,15 @@ services:
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_PEER_ADDRESS=peer0.org1.org.com:8051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_GOSSIP_ORGLEADER=true
+      - CORE_PEER_GOSSIP_STATE_ENABLED=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=false
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_CHAINCODE_EXECUTETIMEOUT=120s
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0.org1.org.com:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
@@ -116,12 +241,12 @@ services:
         source: ./devchannel/crypto-config/peerOrganizations/org1.org.com/peers/peer0.org1.org.com/tls
         target: /etc/hyperledger/fabric/tls
     depends_on:
-      - orderer0.orderer.com
+      - orderer0.org1.org.com
       - couchdb0.org1.org.com
 
   peer0.org2.org.com:
     container_name: peer0.org2.org.com
-    image: hyperledger/fabric-peer:2.3
+    image: hyperledger/fabric-peer:2.3.3
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer0.org2.org.com
@@ -131,10 +256,14 @@ services:
       - CORE_PEER_ADDRESS=peer0.org2.org.com:9051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_GOSSIP_ORGLEADER=true
+      - CORE_PEER_GOSSIP_STATE_ENABLED=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=false
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_CHAINCODE_EXECUTETIMEOUT=120s
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0.org2.org.com:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
@@ -160,12 +289,12 @@ services:
         source: ./devchannel/crypto-config/peerOrganizations/org2.org.com/peers/peer0.org2.org.com/tls
         target: /etc/hyperledger/fabric/tls
     depends_on:
-      - orderer0.orderer.com
+      - orderer0.org2.org.com
       - couchdb0.org2.org.com
 
   couchdb0.main.org.com:
     container_name: couchdb0.main.org.com
-    image: couchdb:3.1
+    image: couchdb:3.2
     environment:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=adminpw
@@ -175,7 +304,7 @@ services:
       - "5984:5984"
   couchdb0.org1.org.com:
     container_name: couchdb0.org1.org.com
-    image: couchdb:3.1
+    image: couchdb:3.2
     environment:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=adminpw
@@ -185,7 +314,7 @@ services:
       - "6984:5984"
   couchdb0.org2.org.com:
     container_name: couchdb0.org2.org.com
-    image: couchdb:3.1
+    image: couchdb:3.2
     environment:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=adminpw

@@ -14,30 +14,38 @@
 ################################################################################
 Organizations:
 
-    # Orderer Organization
-    - &MainOrgOrderer
-        # MainOrderer Membership Service Provider
-        Name: MainOrgOrdererMSP
+    # # Orderer Organization
+    # - &MainOrgOrderer
+    #     # MainOrderer Membership Service Provider
+    #     Name: MainOrgOrdererMSP
 
-        # ID to load the MSP definition as
-        ID: MainOrgOrdererMSP
+    #     # ID to load the MSP definition as
+    #     ID: MainOrgOrdererMSP
 
-        # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/orderer.com/msp
+    #     # MSPDir is the filesystem path which contains the MSP configuration
+    #     MSPDir: crypto-config/ordererOrganizations/orderer.com/msp
 
-        # Policies defines the set of policies at this level of the config tree
-        # For organization policies, their canonical path is usually
-        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
-        Policies:
-            Readers:
-                Type: Signature
-                Rule: "OR('MainOrgOrdererMSP.member')"
-            Writers:
-                Type: Signature
-                Rule: "OR('MainOrgOrdererMSP.member')"
-            Admins:
-                Type: Signature
-                Rule: "OR('MainOrgOrdererMSP.admin')"
+    #     # SkipAsForeign can be set to true for org definitions which are to be
+    #     # inherited from the orderer system channel during channel creation.  This
+    #     # is especially useful when an admin of a single org without access to the
+    #     # MSP directories of the other orgs wishes to create a channel.  Note
+    #     # this property must always be set to false for orgs included in block
+    #     # creation.
+    #     SkipAsForeign: false
+
+    #     # Policies defines the set of policies at this level of the config tree
+    #     # For organization policies, their canonical path is usually
+    #     #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+    #     Policies:
+    #         Readers:
+    #             Type: Signature
+    #             Rule: "OR('MainOrgOrdererMSP.member')"
+    #         Writers:
+    #             Type: Signature
+    #             Rule: "OR('MainOrgOrdererMSP.member')"
+    #         Admins:
+    #             Type: Signature
+    #             Rule: "OR('MainOrgOrdererMSP.admin')"
 
     # Main Organization (Network Core)
     - &MainOrg
@@ -52,19 +60,27 @@ Organizations:
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
         #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
-        Policies:
+        Policies: &MainOrgPolicies
             Readers:
                 Type: Signature
-                Rule: "OR('MainOrgMSP.admin', 'MainOrgMSP.peer', 'MainOrgMSP.client')"
+                Rule: "OR('MainOrgMSP.member')"
+                #Rule: "OR('MainOrgMSP.admin', 'MainOrgMSP.peer', 'MainOrgMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('MainOrgMSP.admin', 'MainOrgMSP.client')"
+                Rule: "OR('MainOrgMSP.member')"
+                #Rule: "OR('MainOrgMSP.admin', 'MainOrgMSP.client')"
             Admins:
                 Type: Signature
                 Rule: "OR('MainOrgMSP.admin')"
             Endorsement:
                 Type: Signature
                 Rule: "OR('MainOrgMSP.member')"
+
+        # OrdererEndpoints is a list of all orderers this org runs which clients
+        # and peers may to connect to to push transactions and receive blocks respectively.
+        OrdererEndpoints:
+            - "orderer0.main.org.com:7050"
+            - "orderer1.main.org.com:7150"
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
@@ -86,13 +102,15 @@ Organizations:
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
         #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
-        Policies:
+        Policies: &Org1Policies
             Readers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
+                Rule: "OR('Org1MSP.member')"
+                #Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
+                Rule: "OR('Org1MSP.member')"
+                #Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
             Admins:
                 Type: Signature
                 Rule: "OR('Org1MSP.admin')"
@@ -100,12 +118,17 @@ Organizations:
                 Type: Signature
                 Rule: "OR('Org1MSP.member')"
 
+        # OrdererEndpoints is a list of all orderers this org runs which clients
+        # and peers may to connect to to push transactions and receive blocks respectively.
+        OrdererEndpoints:
+            - "orderer0.org1.org.com:8050"
+
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
             - Host: peer0.org1.org.com
-              Port: 7051
+              Port: 8051
 
     # Sample Org, ID2
     - &Org2
@@ -120,13 +143,15 @@ Organizations:
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
         #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
-        Policies:
+        Policies: &Org2Policies
             Readers:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin', 'Org2MSP.peer', 'Org2MSP.client')"
+                Rule: "OR('Org2MSP.member')"
+                #Rule: "OR('Org2MSP.admin', 'Org2MSP.peer', 'Org2MSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin', 'Org2MSP.client')"
+                Rule: "OR('Org2MSP.member')"
+                #Rule: "OR('Org2MSP.admin', 'Org2MSP.client')"
             Admins:
                 Type: Signature
                 Rule: "OR('Org2MSP.admin')"
@@ -134,12 +159,17 @@ Organizations:
                 Type: Signature
                 Rule: "OR('Org2MSP.member')"
 
+        # OrdererEndpoints is a list of all orderers this org runs which clients
+        # and peers may to connect to to push transactions and receive blocks respectively.
+        OrdererEndpoints:
+            - "orderer0.org2.org.com:9050"
+
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
             - Host: peer0.org2.org.com
-              Port: 7051
+              Port: 9051
 
 ################################################################################
 #
@@ -171,7 +201,7 @@ Capabilities:
         # prior releases.
         # Prior to enabling V2.0 channel capabilities, ensure that all
         # orderers and peers on a channel are at v2.0.0 or later.
-        V1_4_3: true
+        V2_0: true
 
     # Orderer capabilities apply only to the orderers, and may be safely
     # used with prior release peers.
@@ -182,7 +212,7 @@ Capabilities:
         # level, but which would be incompatible with orderers from prior releases.
         # Prior to enabling V2.0 orderer capabilities, ensure that all
         # orderers on a channel are at v2.0.0 or later.
-        V1_4_2: true
+        V2_0: true
 
     # Application capabilities apply only to the peer network, and may be safely
     # used with prior release orderers.
@@ -192,7 +222,7 @@ Capabilities:
         # features and fixes of fabric v2.0.
         # Prior to enabling V2.0 orderer capabilities, ensure that all
         # orderers on a channel are at v2.0.0 or later.
-        V1_4_2: true
+        V2_0: true
 
 ################################################################################
 #
@@ -324,7 +354,10 @@ Orderer: &OrdererDefaults
     OrdererType: etcdraft
 
     Addresses:
-        - orderer0.orderer.com:7050
+        - orderer0.main.org.com:7050
+        - orderer1.main.org.com:7150
+        - orderer0.org1.org.com:8050
+        - orderer0.org2.org.com:9050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
@@ -333,7 +366,7 @@ Orderer: &OrdererDefaults
     BatchSize:
 
         # Max Message Count: The maximum number of messages to permit in a batch
-        MaxMessageCount: 100
+        MaxMessageCount: 500
 
         # Absolute Max Bytes: The absolute maximum number of bytes allowed for
         # the serialized messages in a batch.
@@ -356,10 +389,22 @@ Orderer: &OrdererDefaults
         # a subset of the host:port items enumerated in this list should be
         # replicated under the Orderer.Addresses key above.
         Consenters:
-        - Host: orderer0.orderer.com
+        - Host: orderer0.main.org.com
           Port: 7050
-          ClientTLSCert: crypto-config/ordererOrganizations/orderer.com/orderers/orderer0.orderer.com/tls/server.crt
-          ServerTLSCert: crypto-config/ordererOrganizations/orderer.com/orderers/orderer0.orderer.com/tls/server.crt
+          ClientTLSCert: crypto-config/peerOrganizations/main.org.com/peers/orderer0.main.org.com/tls/server.crt
+          ServerTLSCert: crypto-config/peerOrganizations/main.org.com/peers/orderer0.main.org.com/tls/server.crt
+        - Host: orderer1.main.org.com
+          Port: 7150
+          ClientTLSCert: crypto-config/peerOrganizations/main.org.com/peers/orderer1.main.org.com/tls/server.crt
+          ServerTLSCert: crypto-config/peerOrganizations/main.org.com/peers/orderer1.main.org.com/tls/server.crt
+        - Host: orderer0.org1.org.com
+          Port: 8050
+          ClientTLSCert: crypto-config/peerOrganizations/org1.org.com/peers/orderer0.org1.org.com/tls/server.crt
+          ServerTLSCert: crypto-config/peerOrganizations/org1.org.com/peers/orderer0.org1.org.com/tls/server.crt
+        - Host: orderer0.org2.org.com
+          Port: 9050
+          ClientTLSCert: crypto-config/peerOrganizations/org2.org.com/peers/orderer0.org2.org.com/tls/server.crt
+          ServerTLSCert: crypto-config/peerOrganizations/org2.org.com/peers/orderer0.org2.org.com/tls/server.crt
 
     # Organizations is the list of orgs which are defined as participants on
     # the orderer side of the network
@@ -432,46 +477,81 @@ Channel: &ChannelDefaults
 ################################################################################
 Profiles:
 
-    MainOrgGenesis:
-        <<: *ChannelDefaults
-        Capabilities:
-            <<: *ChannelCapabilities
-        Orderer:
-            <<: *OrdererDefaults
-            Organizations:
-                - *MainOrgOrderer
-            Capabilities:
-                <<: *OrdererCapabilities
-        Consortiums:
-            MainOrgConsortium:
-                Organizations:
-                    - *MainOrg
-                    - *Org1
-                    - *Org2
-
     MainOrgChannel:
         <<: *ChannelDefaults
-        Capabilities:
-            <<: *ChannelCapabilities
-        Consortium: MainOrgConsortium
+        Orderer:
+            <<: *OrdererDefaults
+            Addresses:
+                - orderer0.main.org.com:7050
+                - orderer1.main.org.com:7150
+            EtcdRaft:
+                Consenters:
+                - Host: orderer0.main.org.com
+                  Port: 7050
+                  ClientTLSCert: crypto-config/peerOrganizations/main.org.com/peers/orderer0.main.org.com/tls/server.crt
+                  ServerTLSCert: crypto-config/peerOrganizations/main.org.com/peers/orderer0.main.org.com/tls/server.crt
+                - Host: orderer1.main.org.com
+                  Port: 7150
+                  ClientTLSCert: crypto-config/peerOrganizations/main.org.com/peers/orderer1.main.org.com/tls/server.crt
+                  ServerTLSCert: crypto-config/peerOrganizations/main.org.com/peers/orderer1.main.org.com/tls/server.crt
+            Organizations:
+                - <<: *MainOrg
+                  Policies:
+                      <<: *MainOrgPolicies
+                      Admins:
+                          Type: Signature
+                          Rule: "OR('MainOrg.member')"
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *MainOrg
-        Capabilities:
-            <<: *ApplicationCapabilities
+                - <<: *MainOrg
+                  Policies:
+                      <<: *MainOrgPolicies
+                      Admins:
+                          Type: Signature
+                          Rule: "OR('MainOrg.member')"
 
     AllOrgsChannel:
         <<: *ChannelDefaults
-        Capabilities:
-            <<: *ChannelCapabilities
-        Consortium: MainOrgConsortium
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - <<: *MainOrg
+                  Policies:
+                      <<: *MainOrgPolicies
+                      Admins:
+                          Type: Signature
+                          Rule: "OR('MainOrg.member')"
+                - <<: *Org1
+                  Policies:
+                      <<: *Org1Policies
+                      Admins:
+                          Type: Signature
+                          Rule: "OR('Org1.member')"
+                - <<: *Org2
+                  Policies:
+                      <<: *Org2Policies
+                      Admins:
+                          Type: Signature
+                          Rule: "OR('Org2.member')"
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *MainOrg
-                - *Org1
-                - *Org2
-        Capabilities:
-            <<: *ApplicationCapabilities
-
+                - <<: *MainOrg
+                  Policies:
+                      <<: *MainOrgPolicies
+                      Admins:
+                          Type: Signature
+                          Rule: "OR('MainOrg.member')"
+                - <<: *Org1
+                  Policies:
+                      <<: *Org1Policies
+                      Admins:
+                          Type: Signature
+                          Rule: "OR('Org1.member')"
+                - <<: *Org2
+                  Policies:
+                      <<: *Org2Policies
+                      Admins:
+                          Type: Signature
+                          Rule: "OR('Org2.member')"
