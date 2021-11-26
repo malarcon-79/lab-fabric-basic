@@ -63,16 +63,19 @@ echo "Package step"
 ../client/tools/peer lifecycle chaincode package test_golang.tar.gz --lang golang --path ../chaincode/src/malarcon.cl/test_golang --label test_golang
 echo "Install step"
 ../client/tools/peer lifecycle chaincode install test_golang.tar.gz #--peerAddresses $CORE_PEER_ADDRESS --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE
+echo "Query installed"
+../client/tools/peer lifecycle chaincode queryinstalled --output json
 
-#../client/tools/peer lifecycle chaincode queryinstalled --output json
-CC_PACKAGE_ID=$(../client/tools/peer lifecycle chaincode calculatepackageid test_golang.tar.gz --output json | jq '.package_id')
+CC_PACKAGE_ID=$(../client/tools/peer lifecycle chaincode calculatepackageid test_golang.tar.gz --output json | jq -r '.package_id')
 OSN_TLS_CA_ROOT_CERT=./devchannel/crypto-config/peerOrganizations/main.org.com/tlsca/tlsca.main.org.com-cert.pem
 
-echo "Approve step"
-../client/tools/peer lifecycle chaincode approveformyorg --orderer localhost:7050 --channelID main-channel --name test_golang --version 1.0.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile $OSN_TLS_CA_ROOT_CERT --init-required --signature-policy "OR ('MainOrgMSP.peer')"
+echo "Approve step $CC_PACKAGE_ID"
+../client/tools/peer lifecycle chaincode approveformyorg --orderer localhost:7050 --channelID main-channel --name test_golang --version 1.0.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile $OSN_TLS_CA_ROOT_CERT --init-required --signature-policy "OR('MainOrgMSP.member')" #--peerAddresses $CORE_PEER_ADDRESS --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE
 
-echo "Check step"
-../client/tools/peer lifecycle chaincode checkcommitreadiness -o localhost:7050 --channelID main-channel --name test_golang --version 1.0.0 --tls --cafile $OSN_TLS_CA_ROOT_CERT --init-required --sequence 1 --output json
+echo "Query Approved $CORE_PEER_LOCALMSPID"
+../client/tools/peer lifecycle chaincode queryapproved -o localhost:7050 --channelID main-channel --name test_golang --tls --cafile $OSN_TLS_CA_ROOT_CERT --sequence 1 --output json #--peerAddresses $CORE_PEER_ADDRESS --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE
+echo "Check Commit Readiness"
+../client/tools/peer lifecycle chaincode checkcommitreadiness -o localhost:7050 --channelID main-channel --name test_golang --version 1.0.0 --tls --cafile $OSN_TLS_CA_ROOT_CERT --init-required --sequence 1 --output json --signature-policy "OR('MainOrgMSP.member')"
 
 echo "Commit step"
-../client/tools/peer lifecycle chaincode commit -o localhost:7050 --channelID main-channel --name test_golang --version 1.0.0 --sequence 1 --init-required --tls --cafile $OSN_TLS_CA_ROOT_CERT #--peerAddresses <PEER_ADDRESS> --tlsRootCertFiles <TLS_ROOT_CERT_FILES>
+../client/tools/peer lifecycle chaincode commit -o localhost:7050 --channelID main-channel --name test_golang --version 1.0.0 --sequence 1 --init-required --tls --cafile $OSN_TLS_CA_ROOT_CERT --signature-policy "OR('MainOrgMSP.member')" #--peerAddresses <PEER_ADDRESS> --tlsRootCertFiles <TLS_ROOT_CERT_FILES>
