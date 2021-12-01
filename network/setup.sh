@@ -10,8 +10,6 @@ cd $curr
 cd ..
 cd ./client
 npm install
-rm -f node_modules/fabric-client/lib/packager/BasePackager.js
-cp patch/BasePackager.js node_modules/fabric-client/lib/packager/BasePackager.js
 
 cd $curr
 

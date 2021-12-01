@@ -9,7 +9,6 @@ global.__basedir = __dirname;
 
 // Libs imports
 const express = require('express');
-const bodyParser = require('body-parser');
 const http = require('http');
 const cors = require('cors');
 
@@ -45,9 +44,9 @@ app.options('*', cors());
 app.use(cors());
 
 // Support parsing of application/json type post data
-app.use(bodyParser.json({ limit: '50mb' }));
+app.use(express.json({ limit: '50mb' }));
 // Support parsing of application/x-www-form-urlencoded post data
-app.use(bodyParser.urlencoded({
+app.use(express.urlencoded({
     extended: false,
     limit: '50mb'
 }));

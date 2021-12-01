@@ -4,7 +4,8 @@
     "channels": {
         "main-channel": {
             "orderers": [
-                "orderer0.main.org.com"
+                "orderer0.main.org.com",
+                "orderer1.main.org.com"
             ],
             "peers": {
                 "peer0.main.org.com": {
@@ -18,6 +19,7 @@
         "allorgs-channel": {
             "orderers": [
                 "orderer0.main.org.com",
+                "orderer1.main.org.com",
                 "orderer0.org1.org.com",
                 "orderer0.org2.org.com"
             ],
@@ -79,28 +81,51 @@
             "signedCert": {
                 "path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/users/Admin@org2.org.com/msp/signcerts/Admin@org2.org.com-cert.pem"
             }
-        },
-        "MainOrgOrderer": {
-            "mspid": "MainOrgOrdererMSP",
-            "peers": [],
-            "adminPrivateKey": {
-                "path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/users/Admin@orderer.com/msp/keystore/priv_sk"
-            },
-            "signedCert": {
-                "path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/users/Admin@orderer.com/msp/signcerts/Admin@orderer.com-cert.pem"
-            }
         }
     },
     "orderers": {
-        "orderer0.orderer.com": {
-            "name": "orderer0.orderer.com",
+        "orderer0.main.org.com": {
+            "name": "orderer0.main.org.com",
             "url": "grpcs://localhost:7050",
             "grpcOptions": {
-                "ssl-target-name-override": "orderer0.orderer.com",
+                "ssl-target-name-override": "orderer0.main.org.com",
                 "grpc-max-send-message-length": -1
             },
             "tlsCACerts": {
-                "path": "./../network/devchannel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer0.orderer.com/msp/tlscacerts/tlsca.orderer.com-cert.pem"
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/peers/orderer0.main.org.com/msp/tlscacerts/tlsca.main.org.com-cert.pem"
+            }
+        },
+        "orderer1.main.org.com": {
+            "name": "orderer1.main.org.com",
+            "url": "grpcs://localhost:7150",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer1.main.org.com",
+                "grpc-max-send-message-length": -1
+            },
+            "tlsCACerts": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/main.org.com/peers/orderer1.main.org.com/msp/tlscacerts/tlsca.main.org.com-cert.pem"
+            }
+        },
+        "orderer0.org1.org.com": {
+            "name": "orderer0.org1.org.com",
+            "url": "grpcs://localhost:8050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer0.org1.org.com",
+                "grpc-max-send-message-length": -1
+            },
+            "tlsCACerts": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/org1.org.com/peers/orderer0.org1.org.com/msp/tlscacerts/tlsca.org1.org.com-cert.pem"
+            }
+        },
+        "orderer0.org2.org.com": {
+            "name": "orderer0.org2.org.com",
+            "url": "grpcs://localhost:9050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer0.org2.org.com",
+                "grpc-max-send-message-length": -1
+            },
+            "tlsCACerts": {
+                "path": "./../network/devchannel/crypto-config/peerOrganizations/org2.org.com/peers/orderer0.org2.org.com/msp/tlscacerts/tlsca.org2.org.com-cert.pem"
             }
         }
     },
