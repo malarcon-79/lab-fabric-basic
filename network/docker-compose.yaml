@@ -162,6 +162,7 @@ services:
       - CORE_PEER_GOSSIP_ORGLEADER=true
       - CORE_PEER_GOSSIP_STATE_ENABLED=false
       - CORE_PEER_GOSSIP_USELEADERELECTION=false
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.main.org.com:7051
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -210,6 +211,7 @@ services:
       - CORE_PEER_GOSSIP_ORGLEADER=true
       - CORE_PEER_GOSSIP_STATE_ENABLED=false
       - CORE_PEER_GOSSIP_USELEADERELECTION=false
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.org.com:8051
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
@@ -259,6 +261,7 @@ services:
       - CORE_PEER_GOSSIP_ORGLEADER=true
       - CORE_PEER_GOSSIP_STATE_ENABLED=false
       - CORE_PEER_GOSSIP_USELEADERELECTION=false
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.org.com:9051
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
