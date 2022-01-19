@@ -165,7 +165,7 @@ services:
 
   couchdb0.main.org.com:
     container_name: couchdb0.main.org.com
-    image: couchdb:3.1
+    image: couchdb:3.2
     environment:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=adminpw
@@ -175,7 +175,7 @@ services:
       - "5984:5984"
   couchdb0.org1.org.com:
     container_name: couchdb0.org1.org.com
-    image: couchdb:3.1
+    image: couchdb:3.2
     environment:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=adminpw
@@ -185,7 +185,7 @@ services:
       - "6984:5984"
   couchdb0.org2.org.com:
     container_name: couchdb0.org2.org.com
-    image: couchdb:3.1
+    image: couchdb:3.2
     environment:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=adminpw
